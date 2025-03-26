@@ -51,7 +51,6 @@ body {
 header {
     text-align: center;
     padding: 3rem 0;
-    background-image: url('./测试.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -109,7 +108,6 @@ body::before {
         header {
             text-align: center;
             padding: 4rem 0;
-            background: url('./测试.jpg') no-repeat center center;
             background-size: cover;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 183, 255, 0.4), 0 0 40px rgba(0, 183, 255, 0.2), 0 0 60px rgba(0, 183, 255, 0.1);
@@ -120,6 +118,36 @@ body::before {
             overflow: hidden;
         }
 
+        header .logo-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            width: fit-content;
+            gap: 0.1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header img {
+            height: 5rem;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            animation: floatAnimation 3s ease-in-out infinite;
+        }
+
+        header .logo-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
         header::before {
             content: '';
             position: absolute;
@@ -127,7 +155,49 @@ body::before {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 183, 255, 0.4), 0 0 40px rgba(0, 183, 255, 0.2), 0 0 60px rgba(0, 183, 255, 0.1);
+            margin-bottom: 2rem;
+            color: #333;
+            border: 1px solid rgba(0, 183, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header img:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            header .logo-title {
+                flex-direction: row;
+            }
+            header img {
+                height: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header img {
+                height: 2rem;
+            }
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
             z-index: 0;
         }
 
@@ -337,7 +407,10 @@ body::before {
 <body>
     <div class="container">
         <header>
-            <h1>国科智飞</h1>
+            <div class="logo-title">
+                <img src="./企业logo.png" alt="国科智飞logo">
+                <h1>国科智飞</h1>
+            </div>
             <p>创新驱动未来，品质成就卓越</p>
         </header>
 
