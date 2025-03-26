@@ -170,6 +170,28 @@ body::before {
             border: 1px solid rgba(0, 183, 255, 0.2);
             position: relative;
             overflow: hidden;
+            will-change: transform;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 0;
+        }
+
+        header .logo-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         header img:hover {
@@ -353,12 +375,22 @@ body::before {
             transition: all 0.3s ease;
         }
 
+        @media (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .content {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
             header {
-                padding: 2rem 0;
+                padding: 2.5rem 0;
             }
             h1 {
                 font-size: 2rem;
@@ -369,8 +401,34 @@ body::before {
             }
             .card {
                 padding: 1rem;
+                will-change: transform;
                 animation: fadeInUp 0.5s ease-out forwards;
             }
+            .meeting-schedule {
+                padding: 1rem;
+                margin: 1rem 0;
+                will-change: transform;
+            }
+            .meeting-schedule th,
+            .meeting-schedule td {
+                padding: 0.8rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .card h2 {
+                font-size: 1.4rem;
+            }
+            .meeting-schedule th,
+            .meeting-schedule td {
+                padding: 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
             .card:hover {
                 transform: none;
                 box-shadow: 0 0 15px rgba(82, 190, 255, 0.3);
@@ -408,7 +466,7 @@ body::before {
     <div class="container">
         <header>
             <div class="logo-title">
-              
+                <img src="./企业logo.png" alt="国科智飞logo">
                 <h1>国科智飞</h1>
             </div>
             <p>创新驱动未来，品质成就卓越</p>
