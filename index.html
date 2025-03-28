@@ -7,11 +7,11 @@
     <meta name="keywords" content="人工智能,数据资产管理,AI咨询,企业智能化,国科智飞">
     <meta name="author" content="国科智飞科技有限公司">
     <meta name="theme-color" content="#1a237e">
-    <meta property="og:title" content="国科智飞 - 公司介绍">
+    <meta property="og:title" content="国科智飞">
     <meta property="og:description" content="国科智飞专注于人工智能与数据资产管理，为企业提供智能化解决方案与技术咨询服务">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.guokezhifei.com/">
-    <title>国科智飞 - 公司介绍</title>
+    <title>国科智飞</title>
     
     <!-- 关键CSS内联 -->
     <style>
@@ -158,223 +158,6 @@
             header img {
                 height: 3.5rem;
             }
-            
-            .meeting-schedule {
-                overflow-x: auto;
-            }
-            
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            
-            /* 转换表格为卡片式显示 */
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-            
-            thead tr {
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-            }
-            
-            tr {
-                margin-bottom: 15px;
-                border: 1px solid var(--border-color);
-                border-radius: 8px;
-                padding: 10px;
-                background: var(--white);
-            }
-            
-            td {
-                border: none;
-                position: relative;
-                padding: 8px 8px 8px 50%;
-                text-align: left;
-            }
-            
-            td:before {
-                position: absolute;
-                left: 10px;
-                width: 45%;
-                padding-right: 10px;
-                white-space: nowrap;
-                content: attr(data-label);
-                font-weight: bold;
-                color: var(--primary-dark);
-            }
-            
-            /* 专家卡片样式 */
-            .expert-card {
-                flex-direction: column;
-            }
-            
-            .expert-image {
-                margin-right: 0;
-                margin-bottom: 1rem;
-                text-align: center;
-            }
-            
-            .expert-image img {
-                width: 120px;
-                height: 120px;
-            }
-        }
-        
-        /* 小型手机设备 */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
-            header img {
-                height: 3rem;
-            }
-            .company-slogan {
-                font-size: 0.9rem;
-            }
-            
-            .content .card {
-                padding: 1rem;
-            }
-            
-            .expert-image img {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .ai-basics-content .ai-category {
-                padding: 0.8rem;
-            }
-        }
-        
-        /* 在主要样式中添加额外的移动端优化 */
-        section {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-        }
-        
-        .content .card {
-            background: var(--white);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .content .card:last-child {
-            margin-bottom: 0;
-        }
-        
-        .meeting-schedule {
-            padding: 1.5rem;
-        }
-        
-        .meeting-schedule h2 {
-            margin-bottom: 1rem;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        table th, table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        table th {
-            background-color: var(--primary-light);
-            color: var(--white);
-            font-weight: 600;
-            text-align: left;
-        }
-        
-        .experts-section {
-            padding: 1.5rem;
-        }
-        
-        .experts-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        .expert-card {
-            display: flex;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            width: 100%;
-        }
-        
-        .expert-image {
-            margin-right: 1.5rem;
-            flex-shrink: 0;
-        }
-        
-        .expert-image img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary-light);
-        }
-        
-        .expert-info h3 {
-            color: var(--primary-dark);
-            margin-bottom: 0.5rem;
-            font-size: 1.3rem;
-        }
-        
-        .expert-title {
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-        }
-        
-        .ai-basics-section {
-            padding: 1.5rem;
-        }
-        
-        .ai-basics-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        @media (max-width: 768px) {
-            .ai-basics-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .ai-category {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 1.2rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .ai-category h3 {
-            color: var(--primary-dark);
-            margin-bottom: 0.8rem;
-            font-size: 1.2rem;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            color: var(--text-light);
         }
         
         @media (prefers-reduced-motion: reduce) {
@@ -396,11 +179,6 @@
     
     <!-- 添加DNS预解析 -->
     <link rel="dns-prefetch" href="//guokezhifei.com">
-    
-    <!-- 添加Apple设备支持 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" sizes="180x180" href="./企业logo(1).png">
 </head>
 <body>
     <div class="particles" aria-hidden="true">
@@ -479,7 +257,7 @@
                 <div class="experts-grid">
                     <div class="expert-card">
                         <div class="expert-image">
-                            <img src="./朱总(1).png" alt="朱明雄照片" class="real-avatar" width="150" height="150" loading="lazy">
+                            <img src="./朱总(1).png" alt="朱明雄照片" class="real-avatar" width="100" height="100" loading="lazy">
                         </div>
                         <div class="expert-info">
                             <h3>朱明雄</h3>
