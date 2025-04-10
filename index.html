@@ -147,6 +147,7 @@
             position: relative;
             z-index: 1;
             animation: rotateIn 1s ease-out;
+            flex-direction: row;
         }
 
         header img {
@@ -155,6 +156,7 @@
             object-fit: contain;
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
             animation: floatAnimation 3s ease-in-out infinite;
+            order: -1;
         }
 
         h1 {
@@ -733,12 +735,15 @@
             }
 
             header .logo-title {
-                flex-direction: column;
-                gap: 0.5rem;
+                flex-direction: row;
+                gap: 0.8rem;
+                align-items: center;
+                justify-content: center;
             }
 
             header img {
                 height: 3rem;
+                order: -1;
             }
 
             h1 {
@@ -841,8 +846,14 @@
                 padding: 0.75rem 0.5rem;
             }
 
+            header .logo-title {
+                flex-direction: row;
+                gap: 0.6rem;
+            }
+
             header img {
                 height: 2.5rem;
+                order: -1;
             }
 
             h1 {
@@ -1301,7 +1312,7 @@
 
         <footer>
             <p>国科智飞科技有限公司. 保留所有权利.</p>
-         
+            <p>© 2023 - <span id="current-year">2024</span></p>
         </footer>
     </div>
     
