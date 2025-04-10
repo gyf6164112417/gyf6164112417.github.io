@@ -287,9 +287,10 @@
         }
 
         .schedule-card {
-            display: flex;
+            display: grid;
+            grid-template-columns: auto 1fr;
             gap: 2rem;
-            padding: 1.5rem;
+            padding: 2rem;
             background: var(--white);
             border-radius: var(--border-radius);
             box-shadow: 0 2px 12px var(--shadow-color);
@@ -304,15 +305,17 @@
         }
 
         .time-block {
-            flex: 0 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0.5rem;
+            padding: 1rem;
+            background: rgba(25, 118, 210, 0.05);
+            border-radius: var(--border-radius);
+            min-width: 140px;
         }
 
         .time {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: var(--primary-dark);
             white-space: nowrap;
@@ -327,6 +330,7 @@
             width: 2px;
             background: var(--accent-gradient);
             position: relative;
+            margin: 1rem 0;
         }
 
         .time-line::before,
@@ -350,18 +354,21 @@
         }
 
         .schedule-content {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
         .schedule-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .schedule-header h3 {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             color: var(--primary-dark);
             font-weight: 700;
             margin: 0;
@@ -372,7 +379,10 @@
             align-items: center;
             gap: 0.5rem;
             color: var(--text-light);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            background: rgba(25, 118, 210, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
         }
 
         .location-icon {
@@ -380,25 +390,33 @@
         }
 
         .schedule-details {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto;
             gap: 2rem;
+            align-items: start;
         }
 
         .agenda-items {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .agenda-item {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 1rem;
-            margin-bottom: 1rem;
-            padding-left: 0.5rem;
+            padding: 0.75rem;
+            background: var(--white);
+            border-radius: 12px;
+            transition: var(--transition);
+            border: 1px solid transparent;
         }
 
-        .agenda-item:last-child {
-            margin-bottom: 0;
+        .agenda-item:hover {
+            background: rgba(25, 118, 210, 0.05);
+            border-color: var(--border-color);
+            transform: translateX(4px);
         }
 
         .agenda-dot {
@@ -407,7 +425,6 @@
             height: 8px;
             border-radius: 50%;
             background: var(--accent);
-            margin-top: 0.5rem;
         }
 
         .agenda-item p {
@@ -424,11 +441,12 @@
             padding: 1rem;
             background: rgba(25, 118, 210, 0.05);
             border-radius: var(--border-radius);
+            align-self: flex-start;
         }
 
         .speaker-avatar {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--white);
@@ -437,7 +455,7 @@
 
         .speaker-name {
             color: var(--primary-dark);
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
         }
 
@@ -448,19 +466,21 @@
             }
 
             .schedule-card {
-                flex-direction: column;
+                grid-template-columns: 1fr;
                 gap: 1.5rem;
+                padding: 1.5rem;
             }
 
             .time-block {
                 flex-direction: row;
                 justify-content: center;
-                padding: 0;
+                padding: 0.75rem;
+                min-width: auto;
             }
 
             .time {
                 margin-bottom: 0;
-                margin-right: 1rem;
+                font-size: 1.1rem;
             }
 
             .time-line {
@@ -470,16 +490,20 @@
             .schedule-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.5rem;
+                gap: 1rem;
+            }
+
+            .schedule-header h3 {
+                font-size: 1.4rem;
             }
 
             .schedule-details {
-                flex-direction: column;
+                grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
 
             .speaker {
-                justify-content: flex-start;
+                width: 100%;
             }
         }
 
@@ -488,13 +512,12 @@
                 padding: 1.2rem;
             }
 
-            .meeting-schedule h2 {
-                font-size: 1.6rem;
-                margin-bottom: 1.5rem;
-            }
-
             .schedule-card {
                 padding: 1rem;
+            }
+
+            .time-block {
+                padding: 0.5rem;
             }
 
             .time {
@@ -503,7 +526,11 @@
             }
 
             .schedule-header h3 {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
+            }
+
+            .agenda-item {
+                padding: 0.5rem;
             }
 
             .agenda-item p {
@@ -513,6 +540,11 @@
             .location,
             .speaker-name {
                 font-size: 0.9rem;
+            }
+
+            .speaker-avatar {
+                width: 40px;
+                height: 40px;
             }
         }
 
@@ -1177,8 +1209,9 @@
                 <img src="./企业logo(1).png" alt="国科智飞logo" width="64" height="64" fetchpriority="high" decoding="async">
                 <h1>国科智飞</h1>
             </div>
-            <div class="company-slogan">智变未来:Al演进启示宗与Deepseek实战特训</div>
+            <div class="company-slogan">智变未来：AI演进启示录与DeepSeek实战特训</div>
         </header>
+
         <main>
             <section class="content" aria-label="公司简介">
                 <div class="card">
