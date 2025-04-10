@@ -20,33 +20,63 @@
             --primary: #3949ab;
             --primary-light: #1976d2;
             --accent: #0288d1;
-            --text: #333;
-            --text-light: #666;
+            --text: #2c3e50;
+            --text-light: #546e7a;
             --white: #fff;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --shadow-color: rgba(13, 71, 161, 0.2);
-            --border-color: rgba(13, 71, 161, 0.15);
-            --hover-shadow: rgba(13, 71, 161, 0.3);
-            --transition: all 0.3s ease;
-            --border-radius: 12px;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(13, 71, 161, 0.15);
+            --border-color: rgba(13, 71, 161, 0.1);
+            --hover-shadow: rgba(13, 71, 161, 0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 16px;
             --accent-gradient: linear-gradient(135deg, var(--primary-dark), var(--accent));
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --hover-transform: translateY(-4px);
             scroll-behavior: smooth;
         }
         
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         @keyframes floatAnimation {
             0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
+            50% { transform: translateY(-8px) rotate(0.5deg); }
             100% { transform: translateY(0) rotate(0deg); }
         }
 
         @keyframes rotateIn {
             from { transform: perspective(400px) rotate3d(0, 1, 0, 90deg); opacity: 0; }
             to { transform: perspective(400px) rotate3d(0, 1, 0, 0deg); opacity: 1; }
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
         *, *::before, *::after {
@@ -59,7 +89,9 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a2980, #26d0ce);
+            background-size: 300% 300%;
+            animation: gradientBG 15s ease infinite;
             color: var(--text);
             position: relative;
             min-height: 100vh;
@@ -90,10 +122,11 @@
         header, .content, .meeting-schedule, footer {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            box-shadow: 0 8px 20px var(--shadow-color);
+            box-shadow: var(--card-shadow);
             border: 1px solid var(--border-color);
             overflow: hidden;
             transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
 
         header {
@@ -144,19 +177,774 @@
             z-index: 10;
         }
         
-        /* 基础响应式样式 */
+        /* 主内容区域样式 */
+        .content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* 卡片公共样式 */
+        .card {
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+
+        .card:hover {
+            transform: var(--hover-transform);
+            box-shadow: 0 15px 30px var(--hover-shadow);
+            border-color: var(--primary-light);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 0.75rem;
+            display: inline-block;
+            transition: var(--transition);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .card:hover h2 {
+            transform: translateX(5px);
+            color: var(--accent);
+        }
+
+        .card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .card p {
+            color: var(--text-light);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* 会议时间表样式优化 */
+        .meeting-schedule {
+            margin: 2rem 0;
+            padding: 2.5rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .meeting-schedule h2 {
+            text-align: center;
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .meeting-schedule h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .schedule-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .schedule-card {
+            display: flex;
+            gap: 2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 12px var(--shadow-color);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .schedule-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--hover-shadow);
+            border-color: var(--primary-light);
+        }
+
+        .time-block {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+        }
+
+        .time {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            white-space: nowrap;
+            padding: 0.5rem 1rem;
+            background: rgba(25, 118, 210, 0.1);
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .time-line {
+            flex: 1;
+            width: 2px;
+            background: var(--accent-gradient);
+            position: relative;
+        }
+
+        .time-line::before,
+        .time-line::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .time-line::before {
+            top: 0;
+        }
+
+        .time-line::after {
+            bottom: 0;
+        }
+
+        .schedule-content {
+            flex: 1;
+        }
+
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .schedule-header h3 {
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .location-icon {
+            font-size: 1.2rem;
+        }
+
+        .schedule-details {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .agenda-items {
+            flex: 1;
+        }
+
+        .agenda-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+        }
+
+        .agenda-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .agenda-dot {
+            flex-shrink: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin-top: 0.5rem;
+        }
+
+        .agenda-item p {
+            color: var(--text);
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .speaker {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(25, 118, 210, 0.05);
+            border-radius: var(--border-radius);
+        }
+
+        .speaker-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--white);
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .speaker-name {
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .meeting-schedule {
+                padding: 1.5rem;
+            }
+
+            .schedule-card {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .time-block {
+                flex-direction: row;
+                justify-content: center;
+                padding: 0;
+            }
+
+            .time {
+                margin-bottom: 0;
+                margin-right: 1rem;
+            }
+
+            .time-line {
+                display: none;
+            }
+
+            .schedule-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .schedule-details {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .speaker {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .meeting-schedule {
+                padding: 1.2rem;
+            }
+
+            .meeting-schedule h2 {
+                font-size: 1.6rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .schedule-card {
+                padding: 1rem;
+            }
+
+            .time {
+                font-size: 1rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .schedule-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .agenda-item p {
+                font-size: 1rem;
+            }
+
+            .location,
+            .speaker-name {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* AI基础知识讲解模块样式 */
+        .ai-basics-section {
+            padding: 2.5rem;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .ai-basics-section h2 {
+            text-align: center;
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .ai-basics-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .ai-basics-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .ai-category {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.8rem;
+            box-shadow: 0 2px 12px var(--shadow-color);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .ai-category:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--hover-shadow);
+            border-color: var(--primary-light);
+        }
+
+        .ai-category h3 {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            margin-bottom: 1.25rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .ai-category h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .ai-category:hover h3::after {
+            width: 60px;
+        }
+
+        .ai-category ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ai-category li {
+            color: var(--text);
+            padding: 0.6rem 0;
+            font-size: 1rem;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 1.5rem;
+            transition: var(--transition);
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .ai-category li:last-child {
+            border-bottom: none;
+        }
+
+        .ai-category li::before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .ai-category li:hover {
+            color: var(--primary-dark);
+            transform: translateX(4px);
+            padding-left: 1.8rem;
+        }
+
+        .ai-category li:hover::before {
+            color: var(--primary);
+            left: 4px;
+        }
+
+        /* 页脚样式 */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border-color);
+            background: linear-gradient(to bottom, var(--card-bg), rgba(255, 255, 255, 0.95));
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        footer p:last-child {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary-light);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatAnimation 15s infinite linear;
+            box-shadow: 0 0 8px 1px rgba(25, 118, 210, 0.3);
+        }
+
+        .particle:nth-child(1) { top: 10%; left: 20%; width: 5px; height: 5px; animation-duration: 20s; }
+        .particle:nth-child(2) { top: 25%; left: 80%; width: 8px; height: 8px; animation-duration: 25s; animation-delay: 1s; }
+        .particle:nth-child(3) { top: 60%; left: 45%; width: 6px; height: 6px; animation-duration: 18s; animation-delay: 2s; }
+        .particle:nth-child(4) { top: 80%; left: 15%; width: 4px; height: 4px; animation-duration: 22s; animation-delay: 0.5s; }
+        .particle:nth-child(5) { top: 15%; left: 60%; width: 7px; height: 7px; animation-duration: 24s; animation-delay: 1.5s; }
+        .particle:nth-child(6) { top: 45%; left: 85%; width: 5px; height: 5px; animation-duration: 21s; animation-delay: 2.5s; }
+        .particle:nth-child(7) { top: 70%; left: 50%; width: 6px; height: 6px; animation-duration: 19s; animation-delay: 3s; }
+        .particle:nth-child(8) { top: 30%; left: 35%; width: 9px; height: 9px; animation-duration: 23s; animation-delay: 3.5s; }
+
+        /* 动画效果类 */
+        .scroll-animation {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .scroll-animation.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 涟漪效果 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+            width: 100px;
+            height: 100px;
+            margin-left: -50px;
+            margin-top: -50px;
+        }
+
+        /* 响应式样式调整 */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .content {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .card, .ai-category {
+                padding: 1.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
+
             header {
-                padding: 2rem 1rem;
+                padding: 1.5rem 1rem;
+                margin-bottom: 1rem;
             }
+
+            header .logo-title {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            header img {
+                height: 3rem;
+            }
+
             h1 {
                 font-size: 2rem;
+                letter-spacing: -0.5px;
             }
+
+            .company-slogan {
+                font-size: 1rem;
+                line-height: 1.45;
+                margin: 0.5rem auto;
+            }
+            
+            .content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1.25rem;
+            }
+            
+            .card h2 {
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .card p {
+                font-size: 1rem;
+                line-height: 1.65;
+            }
+            
+            .meeting-schedule {
+                padding: 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .meeting-schedule table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .meeting-schedule th,
+            .meeting-schedule td {
+                padding: 0.8rem 1rem;
+                font-size: 0.95rem;
+                white-space: nowrap;
+            }
+
+            .meeting-schedule td p {
+                margin: 0.4rem 0;
+                white-space: normal;
+            }
+
+            .ai-basics-section {
+                padding: 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .ai-basics-content {
+                gap: 1.5rem;
+            }
+
+            .ai-category {
+                padding: 1.5rem;
+            }
+
+            .ai-category li {
+                padding: 0.5rem 0 0.5rem 1.3rem;
+                font-size: 0.95rem;
+            }
+
+            footer {
+                padding: 1.25rem;
+                margin-top: 1rem;
+            }
+
+            footer p {
+                font-size: 0.85rem;
+            }
+
+            /* 减少背景粒子数量 */
+            .particle:nth-child(n+5) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                background-size: 200% 200%;
+            }
+
+            .container {
+                padding: 0.5rem;
+            }
+
+            header {
+                padding: 0.75rem 0.5rem;
+            }
+
             header img {
-                height: 3.5rem;
+                height: 2.5rem;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                letter-spacing: -0.2px;
+            }
+
+            .company-slogan {
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+
+            .content {
+                padding: 0.5rem;
+                gap: 0.75rem;
+            }
+
+            .card {
+                padding: 0.75rem;
+            }
+
+            .card::before {
+                height: 2px;
+            }
+
+            .card h2 {
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+                padding-bottom: 0.4rem;
+            }
+
+            .card h2::after {
+                width: 25px;
+            }
+
+            .card p {
+                font-size: 0.9rem;
+                line-height: 1.55;
+            }
+
+            .meeting-schedule {
+                padding: 1.2rem;
+                margin: 1.2rem 0;
+            }
+
+            .meeting-schedule h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .meeting-schedule h2::after {
+                width: 35px;
+            }
+
+            .meeting-schedule th,
+            .meeting-schedule td {
+                padding: 0.7rem 0.9rem;
+                font-size: 0.9rem;
+            }
+
+            .experts-section,
+            .ai-basics-section {
+                padding: 1.2rem;
+                margin: 1.2rem 0;
+            }
+
+            .experts-section h2,
+            .ai-basics-section h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .experts-section h2::after,
+            .ai-basics-section h2::after {
+                width: 35px;
+            }
+
+            .ai-category {
+                padding: 1.2rem;
+            }
+
+            .ai-category h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .ai-category li {
+                padding: 0.4rem 0 0.4rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            footer {
+                padding: 0.75rem;
+                margin-top: 0.75rem;
+            }
+
+            footer p {
+                font-size: 0.8rem;
+            }
+
+            footer p:last-child {
+                font-size: 0.75rem;
             }
         }
         
@@ -166,16 +954,200 @@
                 transition: none !important;
             }
         }
+
+        /* 讲师介绍样式 */
+        .experts-section {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            margin: 2rem 0;
+            padding: 2.5rem;
+        }
+
+        .experts-section h2 {
+            text-align: center;
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .experts-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .experts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .expert-card {
+            display: flex;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 2px 12px var(--shadow-color);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .expert-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--hover-shadow);
+            border-color: var(--primary-light);
+        }
+
+        .expert-image {
+            flex: 0 0 140px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .real-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            border: 3px solid var(--white);
+            transition: var(--transition);
+        }
+
+        .expert-card:hover .real-avatar {
+            transform: scale(1.05);
+            border-color: var(--primary-light);
+        }
+
+        .expert-info {
+            flex: 1;
+            padding: 1.5rem 1.5rem 1.5rem 0;
+        }
+
+        .expert-info h3 {
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .expert-info h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .expert-card:hover .expert-info h3::after {
+            width: 60px;
+        }
+
+        .expert-desc p {
+            color: var(--text);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0.5rem 0;
+        }
+
+        .expert-desc p:first-child {
+            margin-top: 0;
+        }
+
+        .expert-desc p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .experts-section {
+                padding: 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .expert-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .expert-image {
+                flex: none;
+                padding: 1.5rem 1.5rem 0.5rem;
+            }
+
+            .expert-info {
+                padding: 1rem 1.5rem 1.5rem;
+            }
+
+            .expert-info h3 {
+                font-size: 1.3rem;
+            }
+
+            .expert-info h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .expert-desc p {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .experts-section {
+                padding: 1.2rem;
+                margin: 1.2rem 0;
+            }
+
+            .expert-image {
+                padding: 1.2rem 1.2rem 0.4rem;
+            }
+
+            .real-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .expert-info {
+                padding: 0.8rem 1.2rem 1.2rem;
+            }
+
+            .expert-info h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .expert-desc p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+        }
     </style>
     
     <!-- 预加载关键资源 -->
     <link rel="preload" href="./企业logo(1).png" as="image" fetchpriority="high">
-    <link rel="preload" href="main.css" as="style">
-    <link rel="preload" href="main.js" as="script">
-    
-    <!-- 非关键CSS -->
-    <link rel="stylesheet" href="main.css" media="print" onload="this.media='all'; this.onload=null;">
-    <noscript><link rel="stylesheet" href="main.css"></noscript>
     
     <!-- 添加DNS预解析 -->
     <link rel="dns-prefetch" href="//guokezhifei.com">
@@ -187,82 +1159,95 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
     </div>
     <div class="container">
         <header>
             <div class="logo-title">
-                <img src="./企业logo(1).png" alt="国科智飞logo" width="64" height="64" fetchpriority="high">
+                <img src="./企业logo(1).png" alt="国科智飞logo" width="64" height="64" fetchpriority="high" decoding="async">
                 <h1>国科智飞</h1>
             </div>
-            <div class="company-slogan">创新驱动未来，品质成就卓越</div>
+            <div class="company-slogan">智变未来:Al演进启示宗5Deepseek实战特训</div>
         </header>
 
         <main>
             <section class="content" aria-label="公司简介">
                 <div class="card">
                     <h2>关于我们</h2>   
-                    <p>我们聚焦人工智能与数据资产管理，为金融、制造、零售、能源等领域提供智能化解决方案。以技术驱动创新，推动行业标准构建与生态协同。</p>
+                    <p>杭州国科智飞是一家由中国科学院大学支持成立的创新企业， 创始成员均来自中国科学院系
+                        统， 我们坚持开放共赢， 同步联合了浙江大学 、卡耐基梅隆大学 、聆心智能 、飞致云等高校、科
+                        技企业开发A I全链路解决方案以及智能体平台工具 。我们的解决方案已成功应用于医疗器械、大健
+                        康 、智能制造 、新零售等十多个行业场景， 为客户降低了35%的综合人力和脑力成本。</p>
                 </div>
                 <div class="card">
                     <h2>我们的服务</h2>
-                    <p>我们提供覆盖企业智能化升级全周期的解决方案，包括AI战略咨询、行业标杆方案打造、轻量化场景工具开发及技术培训支持，并通过AI中台整合数据治理与算法部署能力，助力企业高效完成数智化转型，推动行业标准构建与生态协同发展。</p>
+                    <p>国科智飞（AIguoke ），是深度实践"数字化 、 网络化 、智能化融合发展 "的A I科技团队 ，
+                        专注于为企业提供全链路的人工智能（A I+）垂直服务，旨在为企业构建更加可控、可信且安全、高
+                        效的智能化系统。</p>
                 </div>
                 <div class="card">
                     <h2>联系我们</h2>
-                    <p>地址：南京市江宁区XX路XX号<br>电话：010-12345678<br>邮箱：<a href="mailto:contact@guokezhifei.com">contact@guokezhifei.com</a></p>
+                    <p>地址：南京市江宁区紫金研创中心5号楼601B</p>
                 </div>
             </section>
             
             <section class="meeting-schedule" aria-label="会议时间表">
                 <h2>会议时间表</h2>
-                <table>
-                    <caption class="sr-only">公司会议安排表</caption>
-                    <thead>
-                        <tr>
-                            <th scope="col">时间</th>
-                            <th scope="col">议程</th>
-                            <th scope="col">主持人</th>
-                            <th scope="col">地点</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td data-label="时间">09:00 - 10:30</td>
-                            <td data-label="议程">公司战略规划讨论</td>
-                            <td data-label="主持人">朱明雄</td>
-                            <td data-label="地点">会议室</td>
-                        </tr>
-                        <tr>
-                            <td data-label="时间">11:00 - 12:00</td>
-                            <td data-label="议程">项目进度汇报</td>
-                            <td data-label="主持人">朱明雄</td>
-                            <td data-label="地点">会议室</td>
-                        </tr>
-                        <tr>
-                            <td data-label="时间">14:00 - 15:30</td>
-                            <td data-label="议程">创新技术研讨会</td>
-                            <td data-label="主持人">朱明雄</td>
-                            <td data-label="地点">会议室</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="schedule-container">
+                    <div class="schedule-card">
+                        <div class="time-block">
+                            <div class="time">13:30 - 17:30</div>
+                            <div class="time-line"></div>
+                        </div>
+                        <div class="schedule-content">
+                            <div class="schedule-header">
+                                <h3>AI培训课程</h3>
+                                <span class="location">
+                                    <i class="location-icon">📍</i>
+                                    南京江宁紫金研创中心5号楼601B
+                                </span>
+                            </div>
+                            <div class="schedule-details">
+                                <div class="agenda-items">
+                                    <div class="agenda-item">
+                                        <span class="agenda-dot"></span>
+                                        <p>AI基础知识概述</p>
+                                    </div>
+                                    <div class="agenda-item">
+                                        <span class="agenda-dot"></span>
+                                        <p>AI工具分类与应用</p>
+                                    </div>
+                                    <div class="agenda-item">
+                                        <span class="agenda-dot"></span>
+                                        <p>DeepSeek进阶及实操</p>
+                                    </div>
+                                </div>
+                                <div class="speaker">
+                                    <img src="./朱总(1).png" alt="朱明雄照片" class="speaker-avatar" width="40" height="40" loading="lazy">
+                                    <span class="speaker-name">主讲人：朱明雄</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
             
             <!-- 讲师介绍模块 -->
             <section class="experts-section" aria-label="专业讲师介绍">
-                <h2>专业讲师介绍</h2>
+                <h2>讲师介绍</h2>
                 <div class="experts-grid">
                     <div class="expert-card">
                         <div class="expert-image">
-                            <img src="./朱总(1).png" alt="朱明雄照片" class="real-avatar" width="100" height="100" loading="lazy">
+                            <img src="./朱总(1).png" alt="朱明雄照片" class="real-avatar" width="100" height="100" loading="lazy" decoding="async">
                         </div>
                         <div class="expert-info">
                             <h3>朱明雄</h3>
-                            <p class="expert-title">首席AI科学家</p>
-                            <p class="expert-desc">清华大学计算机博士，前微软亚洲研究院高级研究员。在人工智能、机器学习和大数据分析领域拥有15年研究经验，发表学术论文50余篇，持有专利20余项。曾主导多个大型AI项目，为金融、医疗和制造业提供尖端技术解决方案。</p>
+                            <p class="expert-desc">
+                                <p>中国科学院大学人工智能博士</p>
+                                <p>浙江省科技局签约科学传播专家</p>
+                                <p>前中国航天科工集团国产化项目组长</p>
+                                <p>中国科学院大学杭高院科创俱乐部主席</p>
+                                <p>杭州国科智飞科技有限公司 CEO</p>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -270,27 +1255,46 @@
             
             <!-- AI基础知识讲解模块 -->
             <section class="ai-basics-section" aria-label="AI基础知识">
-                <h2>AI基础知识讲解</h2>
+                <h2>AI培训大纲</h2>
                 <div class="ai-basics-content">
                     <div class="ai-category">
-                        <h3>人工智能概述</h3>
-                        <p>人工智能是计算机科学的一个分支，致力于研发能够模拟人类智能行为的系统。它包括机器学习、深度学习、自然语言处理、计算机视觉等多个领域。现代AI系统能够执行图像识别、语音理解、自动翻译和决策支持等复杂任务，正在各行各业实现广泛应用。</p>
+                        <h3>第一章：AI基础知识概述</h3>
+                        <ul>
+                            <li>人工智能的定义</li>
+                            <li>AI的发展历程</li>
+                            <li>AI的应用领域</li>
+                            <li>AI技术路线</li>
+                            <li>AI发展趋势</li>
+                            <li>AI工具全景</li>
+                        </ul>
                     </div>
                     
                     <div class="ai-category">
-                        <h3>机器学习基础</h3>
-                        <p>机器学习是AI的核心技术，它使计算机系统能够从数据中学习并改进，而无需显式编程。主要分为监督学习、无监督学习和强化学习三大类。监督学习通过标记数据训练模型；无监督学习发现数据中的隐藏模式；强化学习则通过与环境交互来学习最优策略。</p>
+                        <h3>第二章：AI工具分类与应用</h3>
+                        <ul>
+                            <li>文本生成与处理</li>
+                            <li>图像处理与生成</li>
+                            <li>音乐生成工具</li>
+                            <li>视频生成与编辑</li>
+                            <li>其他</li>
+                        </ul>
                     </div>
                     
                     <div class="ai-category">
-                        <h3>深度学习与神经网络</h3>
-                        <p>深度学习是机器学习的一个子集，利用多层神经网络处理复杂数据。这些网络通过模拟人脑神经元连接方式，能够自动提取特征并进行抽象。卷积神经网络(CNN)在图像处理领域表现卓越，循环神经网络(RNN)和Transformer在处理序列数据如文本和语音方面具有优势。</p>
-                    </div>
-                    
-                    <div class="ai-category">
-                        <h3>企业AI应用实践</h3>
-                        <p>企业实施AI解决方案通常遵循数据收集与准备、模型选择与训练、部署与监控、持续优化的流程。成功的AI项目需要明确的业务目标、高质量数据、合适的技术方案和跨部门协作。我们提供从战略咨询到技术实施的全流程支持，帮助企业克服AI落地挑战。</p>
-                    </div>
+                        <h3>第三章：DeepSeek讲解及实操</h3>
+                        <ul>
+                            <li>deepseek是什么</li>
+                            <li>deepseek工作原理</li>
+                            <li>deepseek功能及应用场景</li>
+                            <li>如何高效使用deepseek</li>
+                            <li>如何编写提示词</li>
+                            <li>deepseek功能实操</li>
+                            <li>deepseek+kimi案例讲解</li>
+                            <li>deepseek+剪映案例讲解</li>
+                            <li>deepseek+MJ案例讲解</li>
+                            <li>deepseek+即时案例讲解</li>
+                        </ul>
+                </div>
                 </div>
             </section>
         </main>
@@ -304,7 +1308,319 @@
     <!-- 屏幕阅读器辅助样式 -->
     <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
     
-    <!-- 延迟加载JavaScript -->
-    <script src="main.js" defer></script>
+    <!-- JavaScript代码 -->
+    <script>
+        /**
+         * 国科智飞网站脚本 - 优化版
+         */
+
+        // 配置参数
+        const CONFIG = {
+            // 性能优化设置
+            PARTICLE_COUNT: 5,
+            PARTICLE_MOBILE: false,
+            THROTTLE_DELAY: 100,
+            
+            // 动画设置
+            SCROLL_THRESHOLD: 0.1,
+            RIPPLE_DURATION: 600,
+            SHAKE_DURATION: 500
+        };
+
+        // DOM元素缓存 - 提高性能
+        let DOM = {};
+
+        /**
+         * 节流函数 - 控制高频事件触发频率
+         */
+        function throttle(callback, delay = CONFIG.THROTTLE_DELAY) {
+            let lastCall = 0;
+            return function(...args) {
+                const now = Date.now();
+                if (now - lastCall >= delay) {
+                    lastCall = now;
+                    callback.apply(this, args);
+                }
+            };
+        }
+
+        /**
+         * 检测设备类型
+         */
+        function detectDeviceType() {
+            return {
+                isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768,
+                prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            };
+        }
+
+        /**
+         * 页脚年份更新
+         */
+        function updateCopyrightYear() {
+            const yearElement = document.getElementById('current-year');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+        }
+
+        /**
+         * 确保公司标语显示
+         */
+        function ensureSloganVisible() {
+            const slogan = document.querySelector('.company-slogan');
+            if (slogan) {
+                slogan.style.display = 'block';
+                slogan.style.opacity = '1';
+                slogan.style.visibility = 'visible';
+            }
+        }
+
+        /**
+         * 创建动态背景粒子
+         */
+        function createDynamicParticles() {
+            const { isMobile, prefersReducedMotion } = detectDeviceType();
+            
+            // 如果是移动设备或用户偏好减少动画，则不创建粒子
+            if (isMobile && !CONFIG.PARTICLE_MOBILE || prefersReducedMotion) {
+                return;
+            }
+            
+            const particles = document.querySelector('.particles');
+            if (!particles) return;
+            
+            // 创建文档片段以提高性能
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < CONFIG.PARTICLE_COUNT; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('dynamic-particle', 'particle');
+                
+                // 随机粒子属性
+                const size = Math.random() * 6 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 15;
+                const opacity = Math.random() * 0.2 + 0.1;
+                
+                // 设置粒子样式
+                Object.assign(particle.style, {
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    left: `${posX}%`,
+                    top: `${posY}%`,
+                    position: 'absolute',
+                    background: `rgba(25, 118, 210, ${opacity})`,
+                    borderRadius: '50%',
+                    animation: `floatAnimation ${duration}s infinite linear ${delay}s`
+                });
+                
+                fragment.appendChild(particle);
+            }
+            
+            // 一次性添加所有粒子到DOM
+            particles.appendChild(fragment);
+        }
+
+        /**
+         * 设置滚动触发动画
+         */
+        function setupScrollAnimations() {
+            const { prefersReducedMotion } = detectDeviceType();
+            if (prefersReducedMotion) return;
+            
+            const elements = document.querySelectorAll(
+                '.card, .meeting-schedule, .experts-section, ' +
+                '.ai-basics-section, footer, .expert-card, .ai-category'
+            );
+            
+            if (!('IntersectionObserver' in window)) {
+                // 回退方案：简单地显示所有元素
+                elements.forEach(el => {
+                    el.classList.add('scroll-animation', 'animate-in');
+                });
+                return;
+            }
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                        // 元素已显示，不再观察
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: CONFIG.SCROLL_THRESHOLD });
+            
+            // 添加动画类并开始观察
+            elements.forEach(el => {
+                el.classList.add('scroll-animation');
+                observer.observe(el);
+            });
+        }
+
+        /**
+         * 设置3D卡片效果
+         */
+        function setup3DCardEffect() {
+            const { isMobile, prefersReducedMotion } = detectDeviceType();
+            if (isMobile || prefersReducedMotion) return;
+            
+            const cards = document.querySelectorAll('.card, .expert-card, .ai-category');
+            
+            // 使用事件委托减少事件监听器数量
+            document.addEventListener('mousemove', throttle(function(e) {
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    
+                    // 检查鼠标是否在卡片上
+                    if (
+                        e.clientX >= rect.left && 
+                        e.clientX <= rect.right && 
+                        e.clientY >= rect.top && 
+                        e.clientY <= rect.bottom
+                    ) {
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const xPercent = x / rect.width - 0.5;
+                        const yPercent = y / rect.height - 0.5;
+                        
+                        card.style.transform = `perspective(1000px) rotateY(${xPercent * 5}deg) rotateX(${yPercent * -5}deg) translateZ(10px)`;
+                    }
+                });
+            }));
+            
+            // 恢复默认样式
+            cards.forEach(card => {
+                card.addEventListener('mouseleave', function() {
+                    // 使用requestAnimationFrame来优化性能
+                    requestAnimationFrame(() => {
+                        this.style.transform = '';
+                    });
+                });
+            });
+        }
+
+        /**
+         * 设置点击交互效果
+         */
+        function setupClickInteractions() {
+            const { isMobile, prefersReducedMotion } = detectDeviceType();
+            
+            // 标题抖动效果
+            document.querySelectorAll('.card h2, .expert-info h3, .ai-category h3').forEach(heading => {
+                heading.addEventListener('click', function() {
+                    if (!isMobile && !prefersReducedMotion) {
+                        this.style.animation = `shake ${CONFIG.SHAKE_DURATION}ms ease-in-out`;
+                        setTimeout(() => {
+                            this.style.animation = '';
+                        }, CONFIG.SHAKE_DURATION);
+                    }
+                });
+            });
+            
+            // 涟漪效果 - 移动端不启用
+            if (!isMobile && !prefersReducedMotion) {
+                document.querySelectorAll('.card, .expert-card, .ai-category').forEach(card => {
+                    card.addEventListener('click', function(e) {
+                        // 创建涟漪元素
+                        const ripple = document.createElement('div');
+                        ripple.className = 'ripple';
+                        
+                        // 计算涟漪位置
+                        const rect = this.getBoundingClientRect();
+                        ripple.style.left = `${e.clientX - rect.left}px`;
+                        ripple.style.top = `${e.clientY - rect.top}px`;
+                        
+                        // 添加涟漪元素
+                        this.appendChild(ripple);
+                        
+                        // 动画结束后移除涟漪元素
+                        setTimeout(() => {
+                            ripple.remove();
+                        }, CONFIG.RIPPLE_DURATION);
+                    });
+                });
+            }
+        }
+
+        /**
+         * 优化图片加载
+         */
+        function optimizeImages() {
+            // 检查浏览器是否支持原生懒加载
+            if ('loading' in HTMLImageElement.prototype) {
+                // 浏览器支持原生懒加载，确保属性设置正确
+                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                    img.loading = 'lazy';
+                });
+            } else {
+                // 浏览器不支持原生懒加载，使用IntersectionObserver实现
+                const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+                
+                if (lazyImages.length > 0 && 'IntersectionObserver' in window) {
+                    const imageObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const lazyImage = entry.target;
+                                if (lazyImage.dataset.src) {
+                                    lazyImage.src = lazyImage.dataset.src;
+                                }
+                                imageObserver.unobserve(lazyImage);
+                            }
+                        });
+                    });
+                    
+                    lazyImages.forEach(image => imageObserver.observe(image));
+                }
+            }
+        }
+
+        /**
+         * 初始化函数
+         */
+        function init() {
+            // 缓存DOM元素
+            DOM = {
+                currentYear: document.getElementById('current-year'),
+                slogan: document.querySelector('.company-slogan'),
+                particles: document.querySelector('.particles')
+            };
+            
+            // 执行初始化功能
+            updateCopyrightYear();
+            ensureSloganVisible();
+            
+            // 性能优化：使用requestIdleCallback延迟非关键功能
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => {
+                    createDynamicParticles();
+                    setupScrollAnimations();
+                    setup3DCardEffect();
+                    setupClickInteractions();
+                    optimizeImages();
+                });
+            } else {
+                // 回退方案
+                setTimeout(() => {
+                    createDynamicParticles();
+                    setupScrollAnimations();
+                    setup3DCardEffect();
+                    setupClickInteractions();
+                    optimizeImages();
+                }, 100);
+            }
+        }
+
+        // 当DOM加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
 </body>
 </html>
