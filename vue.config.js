@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: '/',
+  publicPath: '/zhinenghuanzhuang/',
   
   // Production optimization
   productionSourceMap: false,

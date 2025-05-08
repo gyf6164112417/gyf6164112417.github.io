@@ -17,8 +17,8 @@ git init
 git add -A
 git commit -m "deploy"
 
-:: 如果发布到 https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:<USERNAME>/zhinenghuanzhuang.git master:gh-pages
+:: 推送到 master 分支
+git push -f https://github.com/gyf6164112417/gyf6164112417.github.io.git master:master
 
 :: 返回上级目录
 cd .. 
