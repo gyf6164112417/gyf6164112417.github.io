@@ -1,0 +1,19 @@
+name: Deploy Vue App
+
+on:
+  push:
+    branches:
+      - master  # 监控 master 分支
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4  # 使用最新版本的 Checkout action
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3  # 使用最新版本的 Setup Node.js action
+      with:
+        node-version: '18'  # 使用
