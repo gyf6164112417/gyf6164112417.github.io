@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "analyze": "vue-cli-service build --report"
+    "analyze": "vue-cli-service build --report",
+    "deploy": "deploy.bat"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
