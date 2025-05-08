@@ -1,0 +1,175 @@
+/* 修复用户头像区域被挤压的问题 */
+.user-profile-bar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 10px 20px !important;
+  background-color: white !important;
+  height: auto !important;
+  min-height: 60px !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.user-profile {
+  display: flex !important;
+  align-items: center !important;
+  max-width: calc(100% - 120px) !important;
+}
+
+.user-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  margin-right: 12px !important;
+}
+
+.user-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.user-info {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 52px) !important;
+}
+
+.user-name {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+  color: #1e293b !important;
+}
+
+.user-role {
+  font-size: 13px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+  color: #64748b !important;
+}
+
+.user-actions {
+  display: flex !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+}
+
+.action-btn {
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 16px !important;
+  color: #64748b !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+/* 修复页面容器和内容 */
+.page-container {
+  background-color: #f8f9fc !important;
+  will-change: transform !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
+  perspective: 1000px !important;
+  transition: background-color 0.3s ease !important;
+}
+
+/* 修复模态窗口和对话框 */
+.upload-dialog, 
+.dialog-content, 
+.modal-content, 
+.image-modal .modal-content,
+.upload-box,
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background-color: white !important;
+  transition: background-color 0.3s ease !important;
+}
+
+/* 修复输入框和按钮 */
+input, textarea, select, button, .btn {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* 修复卡片组件 */
+.card, .stat-card, .model-card, .clothing-card {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+  background-color: white !important;
+}
+
+/* 提升性能的关键样式 */
+* {
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+.app-container, .main-content, .sidebar, .page-container {
+  will-change: transform !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
+  perspective: 1000px !important;
+}
+
+/* 减少动画的性能消耗 */
+.animated-background {
+  animation: none !important;
+  opacity: 0.3 !important;
+}
+
+/* 主题切换过渡动画 */
+body, html {
+  transition: background-color 0.3s ease !important; 
+}
+
+/* 添加全局过渡效果 */
+* {
+  transition-property: color, background-color, border-color, box-shadow !important;
+  transition-duration: 0.3s !important;
+  transition-timing-function: ease !important;
+}
+
+/* 优化滑动过渡动画 */
+.fade-slide-enter-active, .fade-slide-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+  will-change: opacity, transform !important;
+}
+
+.fade-slide-enter-from {
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+}
+
+.fade-slide-leave-to {
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+}
+
+/* 提升图片渲染性能 */
+img {
+  image-rendering: auto !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+/* 优化滚动容器 */
+::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9 !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8 !important;
+  border-radius: 4px !important;
+} 
