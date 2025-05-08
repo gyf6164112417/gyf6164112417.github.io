@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: '/gyf6164112417.github.io/',
+  publicPath: '/',
   
   // Production optimization
   productionSourceMap: false,
